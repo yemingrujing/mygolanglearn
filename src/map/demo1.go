@@ -2,6 +2,24 @@ package main
 
 import "fmt"
 
+func compareMap(m1, m2 map[string]int)(result bool) {
+	if len(m1) != len(m2) {
+		result = false
+		return
+	}
+
+	for k, v1 := range m1 {
+		v2, ok := m2[k]
+		if ok == true && v2 == v1 {
+			continue
+		} else {
+			result = false
+			return
+		}
+	}
+	return true
+}
+
 func main() {
 	// 创建了一个名为 personSalary 的 map，其中键是 string 类型，而值是 int 类型
 	var personSalary map[string]int
@@ -49,4 +67,40 @@ func main() {
 	for key, value := range personSalary1 {
 		fmt.Printf("personSalary1[%s] = %d\n", key, value)
 	}
+
+	fmt.Println("=======================================")
+	// 删除 map 中的元素
+	fmt.Println("map before deletion", personSalary1)
+	delete(personSalary1, "steve")
+	fmt.Println("map after deletion", personSalary1)
+
+	fmt.Println("=======================================")
+	// 获取 map 的长度
+	personSalary1["steve"] = 12000
+	fmt.Println("length is", len(personSalary1))
+
+	fmt.Println("=======================================")
+	// map 也是引用类型。当 map 被赋值为一个新变量的时候，它们指向同一个内部数据结构。因此，改变其中一个变量，就会影响到另一变量
+	fmt.Println("Original person salary", personSalary1)
+	newPersionSalary := personSalary1
+	newPersionSalary["mike"] = 18000
+	fmt.Println("Person salary changed", personSalary1)
+
+	fmt.Println("=======================================")
+	// map 之间不能使用 == 操作符判断，== 只能用来检查 map 是否为 nil, 判断两个 map 是否相等的方法是遍历比较两个 map 中的每个元素
+	map1 := map[string]int {
+		"one": 1,
+		"two": 2,
+	}
+	map2 := map1
+	result := compareMap(map1, map2)
+	fmt.Println("map1 compare map2:", result)
+
+	map3 := map[string]int{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+	}
+	result = compareMap(map1, map3)
+	fmt.Println("map1 compare map3:", result)
 }
