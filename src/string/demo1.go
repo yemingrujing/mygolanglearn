@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"unicode/utf8"
+)
 
 // 单独获取字符串的每一个字节
 func printBytes(s string) {
@@ -15,7 +18,7 @@ func printChars(s string) {
 	}
 }
 
-// rune 是 Go 语言的内建类型，它也是 int32 的别称
+// rune 是 Go 语言的内建类型，它也是 int32 的别称.在 Go 语言中,rune 表示一个代码点.代码点无论占用多少个字节,都可以用一个 rune 来表示
 func printChar(s string) {
 	runes := []rune(s)
 	for i := 0; i < len(runes); i++ {
@@ -30,6 +33,18 @@ func printCharsAndBytes(s string) {
 	}
 }
 
+// 字符串的长度
+func length(s string) {
+	// utf8 package 包中的 func RuneCountInString(s string) (n int) 方法用来获取字符串的长度,这个方法传入一个字符串参数然后返回字符串中的 rune 的数量
+	fmt.Printf("length of %s is %d\n", s, utf8.RuneCountInString(s))
+}
+
+// Go 中的字符串是不可变的,一旦一个字符串被创建，那么它将无法被修改
+// 为了修改字符串,可以把字符串转化为一个 rune 切片,然后这个切片可以进行任何想要的改变,然后再转化为一个字符串
+func mutate(s []rune) string {
+	s[0] = 'a'
+	return string(s)
+}
 
 func main() {
 	name := "Hello World"
@@ -71,4 +86,16 @@ func main() {
 	runeSlice3 := []rune{0x0053, 0x0065, 0x00f1, 0x006f, 0x0072}
 	str3 := string(runeSlice3)
 	fmt.Println(str3)
+
+	fmt.Println("=======================================")
+	// 字符串的长度
+	word1 := "Señor"
+	length(word1)
+	word2 := "Perts"
+	length(word2)
+
+	fmt.Println("=======================================")
+	// 字符串是不可变的
+	h := "hello"
+	fmt.Println(mutate([]rune(h)))
 }
