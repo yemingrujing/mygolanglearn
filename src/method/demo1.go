@@ -25,6 +25,14 @@ func (r Rectangle) Area() int {
 	return r.length * r.width
 }
 
+func area(r Rectangle) {
+	fmt.Printf("Area Function result: %d\n", (r.length * r.width))
+}
+
+func (r Rectangle) area() {
+	fmt.Printf("Area Method result: %d\n", (r.length * r.width))
+}
+
 func (c Circle) Area() float64 {
 	return math.Pi * c.radius * c.radius
 }
@@ -57,6 +65,14 @@ type address struct {
 
 func (a address) fullAddress() {
 	fmt.Printf("Full address %s, %s\n", a.city, a.state)
+}
+
+func perimeter(r *Rectangle) {
+	fmt.Println("perimeter function output:", 2*(r.length+r.width))
+}
+
+func (r *Rectangle) perimeter() {
+	fmt.Println("perimeter method output:", 2*(r.length+r.width))
 }
 
 type person struct {
@@ -113,4 +129,31 @@ func main() {
 		},
 	}
 	p.fullAddress()
+
+	fmt.Println("=======================================")
+	// 在方法中使用值接收器 与在函数中使用值参数
+	// 当一个函数有一个值参数,它只能接受一个值参数.
+	// 当一个方法有一个值接收器,它可以接受值接收器和指针接收器.
+	s := Rectangle{
+		length: 10,
+		width: 20,
+	}
+	area(s)
+	s.area()
+
+	// 通过指针调用值接收器
+	h := &s
+	h.area()
+
+	fmt.Println("=======================================")
+	// 在方法中使用指针接收器 与 在函数中使用指针参数
+	perimeter(h)
+	h.perimeter()
+
+	// 使用值来调用指针接收器
+	s.perimeter()
+
+	fmt.Println("=======================================")
+	// 在非结构体上的方法
+	// 为了在一个类型上定义一个方法,方法的接收器类型定义和方法的定义应该在同一个包中
 }
